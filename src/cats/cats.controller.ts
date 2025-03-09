@@ -1,5 +1,5 @@
 
-import { Controller, Get, Post, Body, Param, NotFoundException, UseFilters } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, NotFoundException, UseFilters, ParseIntPipe } from '@nestjs/common';
 import { Cat } from './interfaces/cat.interface';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
@@ -23,6 +23,16 @@ export class CatsController {
     @UseFilters(new NotFoundExceptionFilter())
     async findOne(@Param('name') name: string) {
         const result = this.catsService.findOne(name);
+        if (!result)
+            throw new NotFoundException();
+
+        return result
+    }
+
+    @Get(':age')
+    @UseFilters(new NotFoundExceptionFilter())
+    async findByAge(@Param('age', ParseIntPipe) age: number) {
+        const result = this.catsService.findByAge(age);
         if (!result)
             throw new NotFoundException();
 

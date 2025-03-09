@@ -17,4 +17,7 @@ export class CatsService {
     findOne(name: string): Cat {
         return this.cats.find(x => x.name === name);
     }
+    findByAge(age: number): Cat[] {
+        return this.cats.filter(x => x.age === age);
+    }
 }
